@@ -26,11 +26,11 @@ import {
 } from "lucide-react";
 
 const asset = {
-  hero: "/manus-storage/willdale-hero-reference_5cc5730f.jpg",
+  hero: "https://willdale.co.zw/wp-content/uploads/2022/06/joina.png",
   project: "https://willdale.co.zw/wp-content/uploads/2022/06/joina.png",
   topaz: "https://willdale.co.zw/wp-content/uploads/2022/10/Topaz-Dark-Rustic.jpg",
   ashBlue: "https://willdale.co.zw/wp-content/uploads/2022/10/ash-blue-rustic.jpg",
-  logistics: "/manus-storage/willtrans-logistics_4f6eed41.jpg",
+  logistics: "https://willdale.co.zw/wp-content/uploads/2023/05/PSC-Sanganai-flats.jpg",
   mark: "/manus-storage/willdale-mark_6006b84e.png",
 };
 
@@ -268,7 +268,7 @@ export default function Home() {
               </div>
             </div>
             <div className="hero-visual reveal reveal--delay">
-              <SafeImage src={asset.hero} fallback="https://willdale.co.zw/wp-content/uploads/2022/06/WillTrans-1520x800.jpg" alt="Stacks of fired clay bricks at a Willdale brick yard" />
+              <SafeImage src={asset.hero} fallback={asset.project} alt="Stacks of fired clay bricks at a Willdale brick yard" />
               <div className="hero-visual-overlay" />
               <div className="hero-caption">
                 <span>Mount Hampden, Harare</span>
@@ -388,7 +388,7 @@ export default function Home() {
         <section className="logistics-section">
           <div className="site-shell"><SectionMarker index="04" label="Movement" /></div>
           <div className="site-shell logistics-grid reveal">
-            <div className="logistics-image"><SafeImage src={asset.logistics} fallback="https://willdale.co.zw/wp-content/uploads/2022/06/WillTrans-1520x800.jpg" alt="Flatbed truck carrying palletized bricks from a WillTrans-style brickworks yard" /></div>
+            <div className="logistics-image"><SafeImage src={asset.logistics} fallback={asset.project} alt="Willdale project showing brick construction in Zimbabwe" /></div>
             <div className="logistics-copy"><span className="eyebrow eyebrow--green">Willtrans logistics</span><h2>From our yard to your site.</h2><p>Good material is only useful when it arrives where it needs to be. Willtrans supports the movement of Willdale product with a practical, dependable approach to delivery.</p><a className="text-link text-link--dark" href="#contact">Talk to logistics <ArrowRight size={16} /></a></div>
           </div>
         </section>
