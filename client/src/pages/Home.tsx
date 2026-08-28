@@ -4,7 +4,9 @@
   terracotta material cues, and Willdale green reserved for actions and active signals.
 */
 import { FormEvent, useEffect, useState } from "react";
+import { projects, projectCategories } from "@/lib/projects";
 import {
+  ArrowDown,
   ArrowRight,
   ArrowUpRight,
   Check,
@@ -31,19 +33,6 @@ const asset = {
   logistics: "/manus-storage/willtrans-logistics_4f6eed41.jpg",
   mark: "/manus-storage/willdale-mark_6006b84e.png",
 };
-
-const projects = [
-  { name: "Joina City Building", place: "Harare CBD", category: "Commercial", image: "https://willdale.co.zw/wp-content/uploads/2022/06/joina.png" },
-  { name: "Corner House", place: "Harare CBD", category: "Commercial", image: "https://willdale.co.zw/wp-content/uploads/2022/06/C-lBiJsXoAEf0xb.jpeg" },
-  { name: "Reserve Bank of Zimbabwe", place: "Harare CBD", category: "Civic", image: "https://willdale.co.zw/wp-content/uploads/2022/06/0811-1-1-RBZ-BUILDING.webp" },
-  { name: "Northwest High School", place: "Harare", category: "Education", image: "https://willdale.co.zw/wp-content/uploads/2022/06/Northwest-High-School.jpg" },
-  { name: "Sam Levy’s Village", place: "Borrowdale, Harare", category: "Commercial", image: "https://willdale.co.zw/wp-content/uploads/2022/11/Adidas-Performance-Store.jpg" },
-  { name: "West End Clinic", place: "Harare", category: "Healthcare", image: "https://willdale.co.zw/wp-content/uploads/2022/11/kkk.png" },
-  { name: "Aspire Heights", place: "Harare", category: "Residential", image: "https://willdale.co.zw/wp-content/uploads/2023/05/Aspire-Hi.jpg" },
-  { name: "PSC Sanganai Flats", place: "Harare", category: "Residential", image: "https://willdale.co.zw/wp-content/uploads/2023/05/PSC-Sanganai-flats.jpg" },
-];
-
-const projectCategories = ["All", "Commercial", "Civic", "Education", "Healthcare", "Residential"];
 
 const products = [
   {
@@ -175,7 +164,13 @@ export default function Home() {
   const [callbackOpen, setCallbackOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("top");
   const [projectCategory, setProjectCategory] = useState("All");
+  const [visibleProjectCount, setVisibleProjectCount] = useState(4);
   const filteredProjects = projectCategory === "All" ? projects : projects.filter((project) => project.category === projectCategory);
+  const visibleProjects = filteredProjects.slice(0, visibleProjectCount);
+
+  useEffect(() => {
+    setVisibleProjectCount(4);
+  }, [projectCategory]);
 
   useEffect(() => {
     const sections = ["top", "about", "projects", "products", "contact"]
@@ -350,16 +345,25 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-              <span className="gallery-count" aria-live="polite">{filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}</span>
+              <span className="gallery-count" aria-live="polite">Showing {visibleProjects.length} of {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}</span>
             </div>
-            <div className="project-list project-list--gallery" role="list" aria-label={`${projectCategory} Willdale projects`}>
-              {filteredProjects.map((project) => (
+            <div id="project-gallery" className="project-list project-list--gallery" role="list" aria-label={`${projectCategory} Willdale projects`}>
+              {visibleProjects.map((project) => (
                 <article className="project-card project-card--filtered" key={project.name} role="listitem">
-                  <div className="project-card-image"><SafeImage src={project.image} fallback={asset.project} alt={`${project.name}, ${project.place}`} /></div>
-                  <div className="project-card-copy"><span>{project.category} / {project.place}</span><h3>{project.name}</h3><ArrowUpRight size={18} /></div>
+                  <a className="project-card-link" href={`/projects/${project.slug}`} aria-label={`View details for ${project.name}`}>
+                    <div className="project-card-image"><SafeImage src={project.image} fallback={asset.project} alt={`${project.name}, ${project.place}`} /></div>
+                    <div className="project-card-copy"><span>{project.category} / {project.place}</span><h3>{project.name}</h3><ArrowUpRight size={18} /></div>
+                  </a>
                 </article>
               ))}
             </div>
+            {visibleProjectCount < filteredProjects.length && (
+              <div className="load-more-wrap">
+                <button className="button button--outline load-more" type="button" onClick={() => setVisibleProjectCount((count) => Math.min(count + 4, filteredProjects.length))} aria-controls="project-gallery">
+                  Load more projects <ArrowDown size={16} />
+                </button>
+              </div>
+            )}
           </div>
         </section>
 

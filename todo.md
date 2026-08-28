@@ -8,4 +8,9 @@
 - [x] Add category data and filter controls to the project gallery.
 - [x] Preserve accessible keyboard and screen-reader states for filtering.
 - [x] Verify gallery behavior at desktop and mobile widths.
-- [ ] Save a new checkpoint and deliver the gallery revision.
+- [x] Save a new checkpoint and deliver the gallery revision.
+- [x] Add project detail data with documented metadata and image sets.
+- [x] Add route-based detail pages with carousel controls and keyboard support.
+- [x] Add Load More behavior that preserves active category filtering.
+- [x] Verify gallery loading, detail routes, carousel, and responsive layouts.
+- [ ] Save a new checkpoint and deliver the detail-page revision.
