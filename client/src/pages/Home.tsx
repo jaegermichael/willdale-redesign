@@ -28,7 +28,7 @@ const asset = {
   project: "https://willdale.co.zw/wp-content/uploads/2022/06/joina.png",
   topaz: "https://willdale.co.zw/wp-content/uploads/2022/10/Topaz-Dark-Rustic.jpg",
   ashBlue: "https://willdale.co.zw/wp-content/uploads/2022/10/ash-blue-rustic.jpg",
-  logistics: "https://willdale.co.zw/wp-content/uploads/2022/06/WillTrans-1520x800.jpg",
+  logistics: "/manus-storage/willtrans-logistics_4f6eed41.jpg",
   mark: "/manus-storage/willdale-mark_6006b84e.png",
 };
 
@@ -200,6 +200,27 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const revealItems = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
+    if (!("IntersectionObserver" in window)) {
+      revealItems.forEach((item) => item.classList.add("is-visible"));
+      return;
+    }
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -12%", threshold: 0.08 },
+    );
+    revealItems.forEach((item) => revealObserver.observe(item));
+    return () => revealObserver.disconnect();
+  }, []);
+
   function closeMenu() {
     setMenuOpen(false);
   }
@@ -244,7 +265,7 @@ export default function Home() {
       <main>
         <section className="hero-section" aria-labelledby="hero-title">
           <div className="site-shell hero-grid">
-            <div className="hero-copy">
+            <div className="hero-copy reveal">
               <span className="eyebrow eyebrow--green">Clay, shaped for place</span>
               <h1 id="hero-title">Brick made for the life <em>around it.</em></h1>
               <p className="hero-intro">Zimbabwean clay bricks for considered homes, enduring landmarks, and everything built between them.</p>
@@ -257,7 +278,7 @@ export default function Home() {
                 <span><strong>02</strong> Built for Zimbabwean conditions</span>
               </div>
             </div>
-            <div className="hero-visual">
+            <div className="hero-visual reveal reveal--delay">
               <SafeImage src={asset.hero} fallback="https://willdale.co.zw/wp-content/uploads/2022/06/WillTrans-1520x800.jpg" alt="Stacks of fired clay bricks at a Willdale brick yard" />
               <div className="hero-visual-overlay" />
               <div className="hero-caption">
@@ -277,7 +298,7 @@ export default function Home() {
 
         <section className="statement-section" id="about" aria-labelledby="about-title">
           <div className="site-shell"><SectionMarker index="01" label="Material" /></div>
-          <div className="site-shell statement-grid">
+          <div className="site-shell statement-grid reveal">
             <div>
               <span className="eyebrow">What we make</span>
               <h2 id="about-title">The first decision in a building is what it stands on.</h2>
@@ -291,7 +312,7 @@ export default function Home() {
         </section>
 
         <section className="service-band" aria-label="Willdale capabilities">
-          <div className="site-shell capability-grid">
+          <div className="site-shell capability-grid reveal">
             <div className="capability-intro">
               <span className="eyebrow eyebrow--light">From earth to site</span>
               <h2>Material, made useful.</h2>
@@ -305,14 +326,14 @@ export default function Home() {
         <section className="projects-section" id="projects" aria-labelledby="projects-title">
           <div className="site-shell"><SectionMarker index="02" label="Places" /></div>
           <div className="site-shell">
-            <div className="section-head section-head--split">
+            <div className="section-head section-head--split reveal">
               <div>
                 <span className="eyebrow">Places we’ve shaped</span>
                 <h2 id="projects-title">A brick is small.<br /><em>The place is not.</em></h2>
               </div>
               <div className="section-head-aside"><p>From civic landmarks to homes and schools, Willdale bricks are part of the everyday architecture of Zimbabwe.</p><a className="text-link text-link--dark" href="#contact">Start a project conversation <ArrowRight size={16} /></a></div>
             </div>
-            <div className="project-feature">
+            <div className="project-feature reveal reveal--delay">
               <div className="project-feature-image">              <SafeImage src={asset.project} fallback="https://willdale.co.zw/wp-content/uploads/2022/06/joina.png" alt="Contemporary face-brick civic building in Harare" /></div>
               <div className="project-feature-copy">
                 <span className="eyebrow eyebrow--green">Featured project</span>
@@ -321,7 +342,7 @@ export default function Home() {
                 <div className="project-meta"><span>Harare, Zimbabwe</span><span>Commercial / civic</span></div>
               </div>
             </div>
-            <div className="project-list" role="list" aria-label="Selected Willdale projects">
+            <div className="project-list reveal reveal--delay-2" role="list" aria-label="Selected Willdale projects">
               {projects.map((project) => (
                 <article className="project-card" key={project.name} role="listitem">
                   <div className="project-card-image"><img src={project.image} alt={`${project.name}, ${project.place}`} /></div>
@@ -335,11 +356,11 @@ export default function Home() {
         <section className="products-section" id="products" aria-labelledby="products-title">
           <div className="site-shell"><SectionMarker index="03" label="Products" /></div>
           <div className="site-shell">
-            <div className="section-head section-head--products">
+            <div className="section-head section-head--products reveal">
               <div><span className="eyebrow">A material library</span><h2 id="products-title">Find the colour<br /><em>in the clay.</em></h2></div>
               <div className="section-head-aside"><p>Explore a considered range of face bricks with distinct tone, texture, and character.</p><a className="button button--outline" href="#standards">View all specifications <ArrowRight size={16} /></a></div>
             </div>
-            <div className="product-grid">
+            <div className="product-grid reveal reveal--delay">
               {products.map((product) => (
                 <article className={`product-card ${product.featured ? "product-card--featured" : ""}`} key={product.name}>
                   <div className="product-image"><SafeImage src={product.image} fallback={product.name === "Topaz Dark Rustic" ? "https://willdale.co.zw/wp-content/uploads/2022/10/Topaz-Dark-Rustic.jpg" : product.name === "Ash Blue Rustic" ? "https://willdale.co.zw/wp-content/uploads/2022/10/ash-blue-rustic.jpg" : product.image} alt={`${product.name} ${product.type}`} /><span className="product-arrow"><ArrowUpRight size={17} /></span></div>
@@ -352,7 +373,7 @@ export default function Home() {
 
         <section className="logistics-section">
           <div className="site-shell"><SectionMarker index="04" label="Movement" /></div>
-          <div className="site-shell logistics-grid">
+          <div className="site-shell logistics-grid reveal">
             <div className="logistics-image"><SafeImage src={asset.logistics} fallback="https://willdale.co.zw/wp-content/uploads/2022/06/WillTrans-1520x800.jpg" alt="Flatbed truck carrying palletized bricks from a WillTrans-style brickworks yard" /></div>
             <div className="logistics-copy"><span className="eyebrow eyebrow--green">Willtrans logistics</span><h2>From our yard to your site.</h2><p>Good material is only useful when it arrives where it needs to be. Willtrans supports the movement of Willdale product with a practical, dependable approach to delivery.</p><a className="text-link text-link--dark" href="#contact">Talk to logistics <ArrowRight size={16} /></a></div>
           </div>
@@ -360,7 +381,7 @@ export default function Home() {
 
         <section className="contact-section" id="contact" aria-labelledby="contact-title">
           <div className="site-shell"><SectionMarker index="05" label="The yard" light /></div>
-          <div className="site-shell contact-grid">
+          <div className="site-shell contact-grid reveal">
             <div className="contact-intro"><span className="eyebrow eyebrow--light">Find us</span><h2 id="contact-title">Let’s put the right brick in the right place.</h2><p>Visit the yard, ask about a product, or bring us the outline of your next build.</p><button className="button button--green" type="button" onClick={() => setCallbackOpen(true)}>Call me back <PhoneCall size={16} /></button></div>
             <div className="contact-details">
               <div className="detail-block"><MapPin size={18} /><div><span>Yard & showroom</span><strong>19.5km peg, Lomagundi Road<br />Mount Hampden, Harare</strong></div></div>
@@ -372,7 +393,7 @@ export default function Home() {
 
         <section className="standards-section" id="standards" aria-labelledby="standards-title">
           <div className="site-shell"><SectionMarker index="06" label="Standards" /></div>
-          <div className="site-shell standards-inner"><div><span className="eyebrow">Before the first course</span><h2 id="standards-title">Good building starts with a clear specification.</h2></div><a className="button button--dark" href="https://willdale.co.zw/brick-standard-specifications/" target="_blank" rel="noreferrer">Open brick standards <ArrowUpRight size={16} /></a></div>
+          <div className="site-shell standards-inner reveal"><div><span className="eyebrow">Before the first course</span><h2 id="standards-title">Good building starts with a clear specification.</h2></div><a className="button button--dark" href="https://willdale.co.zw/brick-standard-specifications/" target="_blank" rel="noreferrer">Open brick standards <ArrowUpRight size={16} /></a></div>
         </section>
       </main>
 
