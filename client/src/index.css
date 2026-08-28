@@ -204,17 +204,37 @@
   .project-feature-copy h3 { max-width: 300px; margin-top: 24px; color: var(--charcoal-green); font-size: 36px; line-height: 1.02; }
   .project-feature-copy p { max-width: 330px; margin-top: 19px; color: var(--muted-ink); font-size: 14px; line-height: 1.65; }
   .project-meta { display: flex; gap: 19px; margin-top: 37px; padding-top: 15px; border-top: 1px solid var(--line); color: var(--fired-clay); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .gallery-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 62px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .filter-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filter-tab { position: relative; border: 1px solid rgba(22,59,53,0.24); border-radius: 0; background: transparent; padding: 10px 13px; color: var(--charcoal-green); font: 700 10px/1 "DM Sans", sans-serif; letter-spacing: 0.04em; transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, transform 160ms ease; }
+  .filter-tab::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -1px; height: 2px; background: var(--willdale-green); transition: right 180ms ease; }
+  .filter-tab:hover, .filter-tab:focus-visible { border-color: var(--charcoal-green); transform: translateY(-2px); }
+  .filter-tab:hover::after, .filter-tab:focus-visible::after, .filter-tab.is-active::after { right: 0; }
+  .filter-tab.is-active { border-color: var(--charcoal-green); background: var(--charcoal-green); color: var(--warm-white); }
+  .gallery-count { color: var(--fired-clay); font: 800 10px/1 "DM Sans", sans-serif; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; }
   .project-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 18px; }
+  .project-list--gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 22px; }
+  .project-card--filtered { animation: gallery-card-in 420ms cubic-bezier(.23,1,.32,1) both; }
+  @keyframes gallery-card-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   .project-card { position: relative; background: var(--warm-white); overflow: hidden; transition: transform 240ms cubic-bezier(.23,1,.32,1), box-shadow 240ms ease; }
   .project-card::after { content: "Explore project"; position: absolute; right: 18px; top: 18px; padding: 7px 8px; background: var(--willdale-green); color: var(--charcoal-green); font-size: 9px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0; transform: translateY(-5px); transition: opacity 180ms ease, transform 180ms ease; }
   .project-card:hover, .project-card:focus-within { transform: translateY(-7px); box-shadow: 0 18px 28px rgba(22,59,53,0.12); }
+  .project-card--filtered:nth-child(2) { animation-delay: 40ms; }
+  .project-card--filtered:nth-child(3) { animation-delay: 80ms; }
+  .project-card--filtered:nth-child(4) { animation-delay: 120ms; }
+  .project-card--filtered:nth-child(5) { animation-delay: 160ms; }
+  .project-card--filtered:nth-child(6) { animation-delay: 200ms; }
+  .project-card--filtered:nth-child(7) { animation-delay: 240ms; }
+  .project-card--filtered:nth-child(8) { animation-delay: 280ms; }
   .project-card:hover::after, .project-card:focus-within::after { opacity: 1; transform: translateY(0); }
   .project-card-image { height: 188px; overflow: hidden; background: #c6b6a0; }
   .project-card:hover .project-card-image img { transform: scale(1.045); }
   .project-card-copy { position: relative; padding: 19px 20px 22px; }
   .project-card-copy > span { color: var(--fired-clay); font-size: 9px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
-  .project-card-copy h3 { margin-top: 10px; color: var(--charcoal-green); font-size: 20px; letter-spacing: -0.04em; }
-  .project-card-copy svg { position: absolute; right: 19px; bottom: 21px; color: var(--willdale-green); }
+  .project-card-copy h3 { margin-top: 10px; color: var(--charcoal-green); font-size: 20px; letter-spacing: -0.04em; transition: color 180ms ease; }
+  .project-card:hover .project-card-copy h3, .project-card:focus-within .project-card-copy h3 { color: var(--fired-clay); }
+  .project-card-copy svg { position: absolute; right: 19px; bottom: 21px; color: var(--willdale-green); transition: transform 180ms ease; }
+  .project-card:hover .project-card-copy svg, .project-card:focus-within .project-card-copy svg { transform: translate(3px, -3px); }
   .products-section { padding: 148px 0 155px; background: var(--warm-white); }
   .section-head--products { align-items: flex-end; }
   .product-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; margin-top: 65px; }
@@ -304,6 +324,7 @@
   .capability-item:last-child { padding-right: 0; }
   .project-feature { grid-template-columns: 1fr 0.9fr; }
   .project-feature-copy { padding: 38px; }
+  .project-list--gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .product-card { grid-column: span 6; }
   .product-card--featured { grid-column: span 6; }
   .product-image, .product-card--featured .product-image { height: 290px; }
@@ -347,8 +368,19 @@
   .project-feature { display: block; margin-top: 48px; }
   .project-feature-image { min-height: 360px; }
   .project-feature-copy { padding: 34px 27px 38px; }
+  .gallery-toolbar { display: block; margin-top: 42px; }
+  .filter-tabs { flex-wrap: nowrap; margin-inline: -2px; padding: 2px; overflow-x: auto; scrollbar-width: none; }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .filter-tab { flex: 0 0 auto; }
+  .gallery-count { display: block; margin-top: 15px; }
   .project-list { display: flex; gap: 14px; margin-inline: calc((100vw - 100%) / -2); padding-inline: 18px; overflow-x: auto; scroll-snap-type: x mandatory; }
   .project-card { min-width: 76vw; scroll-snap-align: start; }
+  .project-list--gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-inline: 0; padding-inline: 0; overflow: visible; }
+  .project-list--gallery .project-card { min-width: 0; }
+  .project-list--gallery .project-card::after { display: none; }
+  .project-list--gallery .project-card-image { height: 140px; }
+  .project-list--gallery .project-card-copy { padding: 14px 12px 17px; }
+  .project-list--gallery .project-card-copy h3 { font-size: 16px; }
   .product-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; margin-top: 48px; }
   .product-card, .product-card--featured { grid-column: span 2; }
   .product-card:not(.product-card--featured) { grid-column: span 1; }

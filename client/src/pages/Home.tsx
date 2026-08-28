@@ -33,25 +33,17 @@ const asset = {
 };
 
 const projects = [
-  {
-    name: "Joina City Building",
-    place: "Harare CBD",
-    category: "Commercial",
-    image: "https://willdale.co.zw/wp-content/uploads/2022/06/joina.png",
-  },
-  {
-    name: "Reserve Bank of Zimbabwe",
-    place: "Harare CBD",
-    category: "Civic",
-    image: "https://willdale.co.zw/wp-content/uploads/2022/06/0811-1-1-RBZ-BUILDING.webp",
-  },
-  {
-    name: "Aspire Heights",
-    place: "Harare",
-    category: "Residential",
-    image: "https://willdale.co.zw/wp-content/uploads/2023/05/Aspire-Hi.jpg",
-  },
+  { name: "Joina City Building", place: "Harare CBD", category: "Commercial", image: "https://willdale.co.zw/wp-content/uploads/2022/06/joina.png" },
+  { name: "Corner House", place: "Harare CBD", category: "Commercial", image: "https://willdale.co.zw/wp-content/uploads/2022/06/C-lBiJsXoAEf0xb.jpeg" },
+  { name: "Reserve Bank of Zimbabwe", place: "Harare CBD", category: "Civic", image: "https://willdale.co.zw/wp-content/uploads/2022/06/0811-1-1-RBZ-BUILDING.webp" },
+  { name: "Northwest High School", place: "Harare", category: "Education", image: "https://willdale.co.zw/wp-content/uploads/2022/06/Northwest-High-School.jpg" },
+  { name: "Sam Levy’s Village", place: "Borrowdale, Harare", category: "Commercial", image: "https://willdale.co.zw/wp-content/uploads/2022/11/Adidas-Performance-Store.jpg" },
+  { name: "West End Clinic", place: "Harare", category: "Healthcare", image: "https://willdale.co.zw/wp-content/uploads/2022/11/kkk.png" },
+  { name: "Aspire Heights", place: "Harare", category: "Residential", image: "https://willdale.co.zw/wp-content/uploads/2023/05/Aspire-Hi.jpg" },
+  { name: "PSC Sanganai Flats", place: "Harare", category: "Residential", image: "https://willdale.co.zw/wp-content/uploads/2023/05/PSC-Sanganai-flats.jpg" },
 ];
+
+const projectCategories = ["All", "Commercial", "Civic", "Education", "Healthcare", "Residential"];
 
 const products = [
   {
@@ -182,6 +174,8 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [callbackOpen, setCallbackOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("top");
+  const [projectCategory, setProjectCategory] = useState("All");
+  const filteredProjects = projectCategory === "All" ? projects : projects.filter((project) => project.category === projectCategory);
 
   useEffect(() => {
     const sections = ["top", "about", "projects", "products", "contact"]
@@ -342,10 +336,26 @@ export default function Home() {
                 <div className="project-meta"><span>Harare, Zimbabwe</span><span>Commercial / civic</span></div>
               </div>
             </div>
-            <div className="project-list reveal reveal--delay-2" role="list" aria-label="Selected Willdale projects">
-              {projects.map((project) => (
-                <article className="project-card" key={project.name} role="listitem">
-                  <div className="project-card-image"><img src={project.image} alt={`${project.name}, ${project.place}`} /></div>
+            <div className="gallery-toolbar reveal reveal--delay-2">
+              <div className="filter-tabs" role="group" aria-label="Filter projects by category">
+                {projectCategories.map((category) => (
+                  <button
+                    className={`filter-tab ${projectCategory === category ? "is-active" : ""}`}
+                    type="button"
+                    key={category}
+                    aria-pressed={projectCategory === category}
+                    onClick={() => setProjectCategory(category)}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+              <span className="gallery-count" aria-live="polite">{filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}</span>
+            </div>
+            <div className="project-list project-list--gallery" role="list" aria-label={`${projectCategory} Willdale projects`}>
+              {filteredProjects.map((project) => (
+                <article className="project-card project-card--filtered" key={project.name} role="listitem">
+                  <div className="project-card-image"><SafeImage src={project.image} fallback={asset.project} alt={`${project.name}, ${project.place}`} /></div>
                   <div className="project-card-copy"><span>{project.category} / {project.place}</span><h3>{project.name}</h3><ArrowUpRight size={18} /></div>
                 </article>
               ))}

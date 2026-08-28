@@ -4,4 +4,8 @@
 - [x] Add purposeful entrance motion with reduced-motion support.
 - [x] Add richer hover and active states for navigation, imagery, projects, products, and CTAs.
 - [x] Verify desktop and mobile screenshots plus production build.
-- [ ] Save a new checkpoint and deliver the revision.
+- [x] Save a new checkpoint and deliver the revision.
+- [x] Add category data and filter controls to the project gallery.
+- [x] Preserve accessible keyboard and screen-reader states for filtering.
+- [x] Verify gallery behavior at desktop and mobile widths.
+- [ ] Save a new checkpoint and deliver the gallery revision.
