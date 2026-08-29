@@ -4,6 +4,7 @@
   terracotta material cues, and Willdale green reserved for actions and active signals.
 */
 import { FormEvent, useEffect, useState } from "react";
+import { FocusCards } from "@/components/ui/focus-cards";
 import { projects, projectCategories } from "@/lib/projects";
 import {
   ArrowDown,
@@ -173,6 +174,20 @@ export default function Home() {
   }, [projectCategory]);
 
   useEffect(() => {
+    if (!callbackOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setCallbackOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [callbackOpen]);
+
+  useEffect(() => {
     const sections = ["top", "about", "projects", "products", "contact"]
       .map((id) => document.getElementById(id))
       .filter(Boolean) as HTMLElement[];
@@ -216,6 +231,7 @@ export default function Home() {
 
   return (
     <div className="site" id="top">
+      <a className="skip-link" href="#main-content">Skip to main content</a>
       <div className="utility-bar">
         <div className="site-shell utility-inner">
           <a href="#standards"><Ruler size={14} /> Standard brick specifications</a>
@@ -251,7 +267,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main>
+      <main id="main-content">
         <section className="hero-section" aria-labelledby="hero-title">
           <div className="site-shell hero-grid">
             <div className="hero-copy reveal">
@@ -347,15 +363,16 @@ export default function Home() {
               </div>
               <span className="gallery-count" aria-live="polite">Showing {visibleProjects.length} of {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}</span>
             </div>
-            <div id="project-gallery" className="project-list project-list--gallery" role="list" aria-label={`${projectCategory} Willdale projects`}>
-              {visibleProjects.map((project) => (
-                <article className="project-card project-card--filtered" key={project.name} role="listitem">
-                  <a className="project-card-link" href={`/projects/${project.slug}`} aria-label={`View details for ${project.name}`}>
-                    <div className="project-card-image"><SafeImage src={project.image} fallback={asset.project} alt={`${project.name}, ${project.place}`} /></div>
-                    <div className="project-card-copy"><span>{project.category} / {project.place}</span><h3>{project.name}</h3><ArrowUpRight size={18} /></div>
-                  </a>
-                </article>
-              ))}
+            <div id="project-gallery" aria-label={`${projectCategory} Willdale projects`}>
+              <FocusCards
+                cards={visibleProjects.map((project) => ({
+                  eyebrow: `${project.category} / ${project.place}`,
+                  fallback: asset.project,
+                  href: `/projects/${project.slug}`,
+                  src: project.image,
+                  title: project.name,
+                }))}
+              />
             </div>
             {visibleProjectCount < filteredProjects.length && (
               <div className="load-more-wrap">
@@ -399,7 +416,7 @@ export default function Home() {
             <div className="contact-intro"><span className="eyebrow eyebrow--light">Find us</span><h2 id="contact-title">Let’s put the right brick in the right place.</h2><p>Visit the yard, ask about a product, or bring us the outline of your next build.</p><button className="button button--green" type="button" onClick={() => setCallbackOpen(true)}>Call me back <PhoneCall size={16} /></button></div>
             <div className="contact-details">
               <div className="detail-block"><MapPin size={18} /><div><span>Yard & showroom</span><strong>19.5km peg, Lomagundi Road<br />Mount Hampden, Harare</strong></div></div>
-              <div className="detail-block"><Clock3 size={18} /><div><span>Business hours</span><strong>Mon–Fri, 8am–5pm<br />Sat, 8:30am–1pm</strong></div></div>
+              <div className="detail-block"><Clock3 size={18} /><div><span>Business hours</span><strong>Mon-Fri, 8am-5pm<br />Sat, 8:30am-1pm</strong></div></div>
               <div className="detail-block"><PhoneCall size={18} /><div><span>Call the team</span><strong><a href="tel:+2638677007150">+263 8677 007 150</a><br /><a href="mailto:marketing@willdale.co.zw">marketing@willdale.co.zw</a></strong></div></div>
             </div>
           </div>
